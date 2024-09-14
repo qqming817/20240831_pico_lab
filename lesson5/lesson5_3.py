@@ -1,7 +1,4 @@
-while True:
-    kg = 0
-    cm = 0
-
+def input_data():
     while True:
         try:
             cm = int(input("請輸入身高(公分):"))
@@ -12,7 +9,7 @@ while True:
             print("輸入格式錯誤")
             continue
         except Exception as e:
-            print(f'輸入錯誤{cm}')
+            print(f'輸入錯誤 {cm}')
             continue
 
     while True:
@@ -25,10 +22,16 @@ while True:
             print("輸入格式錯誤")
             continue
         except Exception as e:
-            print(f'輸入錯誤{kg}')
+            print(f'輸入錯誤 {kg}')
             continue
+    return (cm, kg)
 
-    print(f'身高= {cm} 公分, 體重= {kg} 公斤')
+while True:
+    cm = 0
+    kg = 0
+    cm, kg = input_data()
+
+    print(f'身高: {cm} 公分, 體重: {kg} 公斤')
     cm = (cm / 100) * (cm / 100)
     bmi = kg / cm
     print(f'BMI={bmi}')
