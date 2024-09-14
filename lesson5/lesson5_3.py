@@ -1,4 +1,4 @@
-def input_data():
+def input_data()->tuple[int, int]:
     while True:
         try:
             cm = int(input("請輸入身高(公分):"))
@@ -24,30 +24,37 @@ def input_data():
         except Exception as e:
             print(f'輸入錯誤 {kg}')
             continue
-    return (cm, kg)
+    return cm, kg
 
-while True:
-    cm = 0
-    kg = 0
-    cm, kg = input_data()
+def get_status(bmi:float)->str:
+    if bmi >= 35:
+        return "過度肥胖(BMI≧35)"
+    elif bmi >= 27:
+        return "中度肥胖(BMI≧27)"
+    elif bmi >= 24:
+        return "適度肥胖(BMI≧24)"
+    elif bmi >= 18.5:
+        return "正常肥胖"
+    else:
+        return "體重過輕"
 
-    print(f'身高: {cm} 公分, 體重: {kg} 公斤')
+def cal_bmi(cm:int, kg:int) -> float:
     cm = (cm / 100) * (cm / 100)
     bmi = kg / cm
-    print(f'BMI={bmi}')
-    if bmi >= 35:
-        print("過度肥胖")
-    elif bmi >= 27:
-        print("中度肥胖")
-    elif bmi >= 24:
-        print("適度肥胖")
-    elif bmi >= 18.5:
-        print("正常肥胖")
-    else:
-        print("體重過輕")
+    return bmi
 
-    paly_again = input("請問繼續嗎？(Y/N)：")
-    if paly_again == "N":
+while True:
+    cm = 0 #清除變數
+    kg = 0 #清除變數
+    cm, kg = input_data() #呼叫function
+
+    print(f'身高: {cm} 公分, 體重: {kg} 公斤')
+    BMI = cal_bmi(kg=kg, cm=cm) #引數"名稱"的呼叫可以不依照順序
+    print(f'BMI={BMI}')
+    print(get_status(BMI))
+    
+    paly_again = input("請問繼續嗎？(y/n)：")
+    if paly_again == "n":
         break
 
 print("程式結束")
