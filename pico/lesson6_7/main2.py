@@ -11,5 +11,10 @@ def do_thing(t):
     temperature = 27 - (reading - 0.706)/0.001721
     print(temperature)
 
+def do_thing_1(t):
+    print("do_thing_1")
+
+#使用多個Timer可執行多個工作
 Timer(period=2000, mode=Timer.PERIODIC, callback=do_thing)
+Timer(period=500, mode=Timer.PERIODIC, callback=do_thing_1)
 
