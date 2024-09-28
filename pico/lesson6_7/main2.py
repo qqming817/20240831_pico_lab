@@ -1,4 +1,4 @@
-from machine import Timer, ADC
+from machine import Timer, ADC, Pin
 
 adc = machine.ADC(4)
 conversion_factor = 3.3/(65535)
@@ -15,7 +15,7 @@ def do_thing(t):
 def do_thing_1(t):
     adc1 = ADC(Pin(26))
     duty = adc1.read_u16()
-    print("可變電阻: {round(duty/65535*100)}")
+    print(f"可變電阻: {round(duty/65535*100)}")
 
 #使用多個Timer可執行多個工作
 Timer(period=2000, mode=Timer.PERIODIC, callback=do_thing)
