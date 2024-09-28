@@ -18,7 +18,7 @@ def do_thing_1(t):
     adc1 = ADC(Pin(26))
     duty = adc1.read_u16()
     
-    pwm.duty_u16(65535)
+    pwm.duty_u16(duty) #ADC可變電阻電壓輸出給PWM控制LED登亮度
     print(f"可變電阻: {round(duty/65535*100)}")
 
 #使用多個Timer可執行多個工作
