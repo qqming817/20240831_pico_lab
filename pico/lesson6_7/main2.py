@@ -1,9 +1,11 @@
-from machine import Timer, ADC, Pin, PWM
+from machine import Timer, ADC, Pin, PWM, RTC
 
 adc = machine.ADC(4)
 conversion_factor = 3.3/(65535)
 
-pwm = PWM(Pin(15), freq=50) #freq要給
+pwm = PWM(Pin(15), freq=10) #freq要給
+
+rtc = RTC()
 
 def do_thing(t):
     reading = adc.read_u16() * conversion_factor
@@ -11,6 +13,11 @@ def do_thing(t):
     # The temperature sensor measures the Vbe voltage of a biased bipolar diode, connected to the fifth ADC channel
     # Typically, Vbe = 0.706V at 27 degrees C, with a slope of -1.721mV (0.001721) per degree. 
     temperature = 27 - (reading - 0.706)/0.001721
+    
+    year, month, week, day, hours, minutes, seconds, subseconds = rtc.datetime()
+    datetime_str = f"{year}-{month}-{day} {hours}:{minutes}:{seconds} {subseconds}"
+    
+    print(datetime_str)
     print(temperature)
 
 #可變電阻
