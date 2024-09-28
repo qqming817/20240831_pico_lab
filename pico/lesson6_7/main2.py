@@ -1,7 +1,9 @@
-from machine import Timer, ADC, Pin
+from machine import Timer, ADC, Pin, PWM
 
 adc = machine.ADC(4)
 conversion_factor = 3.3/(65535)
+
+pwm = PWM(Pin(15), freq=50) #freq要給
 
 def do_thing(t):
     reading = adc.read_u16() * conversion_factor
@@ -15,6 +17,8 @@ def do_thing(t):
 def do_thing_1(t):
     adc1 = ADC(Pin(26))
     duty = adc1.read_u16()
+    
+    pwm.duty_u16(65535)
     print(f"可變電阻: {round(duty/65535*100)}")
 
 #使用多個Timer可執行多個工作
