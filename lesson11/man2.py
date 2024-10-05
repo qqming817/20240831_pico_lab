@@ -30,5 +30,5 @@ if wlan.status() != 3:
     raise RuntimeError('network connection failed.')
 else:
     print('Connected')
-    status = wlan.ifconfig() #回傳陣列
+    status = wlan.ifconfig() #回傳List
     print('IP = ' + status[0])

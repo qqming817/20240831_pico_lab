@@ -1,6 +1,6 @@
 #! usr/bin/micropython
 
-#import tools
+import tools
 
 '''
 LED -> GPIO 15
@@ -49,11 +49,18 @@ def do_thing_1(t):
 def do_reconnect(t):
     tools.reconnect()
 
-def main():    
-    #使用多個Timer可執行多個工作
-    Timer(period=2000, mode=Timer.PERIODIC, callback=do_thing)
-    Timer(period=1000, mode=Timer.PERIODIC, callback=do_thing_1)
-    #Timer(period=10000, mode=Timer.PERIODIC, callback=do_reconnect)
+def main():
+    try:
+        tools.connect()
+    except RuntimeError as e:
+        print(e)
+    except Exception:
+        print('不明的錯誤')
+    else:
+        #使用多個Timer可執行多個工作
+        Timer(period=2000, mode=Timer.PERIODIC, callback=do_thing)
+        Timer(period=1000, mode=Timer.PERIODIC, callback=do_thing_1)
+        #Timer(period=10000, mode=Timer.PERIODIC, callback=do_reconnect)
 
 if __name__ == "__main__":
     #tools.connect() #連線到Wifi
