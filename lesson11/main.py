@@ -57,9 +57,10 @@ def main():
     except Exception:
         print('不明的錯誤')
     else:
+        pass
         #使用多個Timer可執行多個工作
-        Timer(period=2000, mode=Timer.PERIODIC, callback=do_thing)
-        Timer(period=1000, mode=Timer.PERIODIC, callback=do_thing_1)
+        #Timer(period=2000, mode=Timer.PERIODIC, callback=do_thing)
+        #Timer(period=1000, mode=Timer.PERIODIC, callback=do_thing_1)
         #Timer(period=10000, mode=Timer.PERIODIC, callback=do_reconnect)
 
 if __name__ == "__main__":
