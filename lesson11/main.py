@@ -3,9 +3,10 @@ import tools
 from machine import Timer, ADC, Pin, PWM, RTC
 
 #tools.connect() #連線到Wifi
+conversion_factor = 3.3/(65535)
 
 adc = machine.ADC(4)
-conversion_factor = 3.3/(65535)
+adc_light = ADC(Pin(28))
 
 pwm = PWM(Pin(15), freq=65535) #freq要給
 
@@ -18,11 +19,15 @@ def do_thing(t):
     # Typically, Vbe = 0.706V at 27 degrees C, with a slope of -1.721mV (0.001721) per degree. 
     temperature = 27 - (reading - 0.706)/0.001721
     
-    year, month, week, day, hours, minutes, seconds, subseconds = rtc.datetime()
-    datetime_str = f"{year}-{month}-{day} {hours}:{minutes}:{seconds} {subseconds}"
+    #顯示日期時間(by電腦)
+    #year, month, week, day, hours, minutes, seconds, subseconds = rtc.datetime()
+    #datetime_str = f"{year}-{month}-{day} {hours}:{minutes}:{seconds} {subseconds}"
     
-    print(datetime_str)
-    print(temperature)
+    ligth = adc_light.read_u16()
+    #print(datetime_str)
+    
+    print(f"溫度:{temperature}")
+    print(f"光線:{ligth}")
 
 #可變電阻
 def do_thing_1(t):
@@ -39,4 +44,4 @@ def do_reconnect(t):
 #使用多個Timer可執行多個工作
 Timer(period=2000, mode=Timer.PERIODIC, callback=do_thing)
 Timer(period=1000, mode=Timer.PERIODIC, callback=do_thing_1)
-Timer(period=10000, mode=Timer.PERIODIC, callback=do_reconnect)
+#Timer(period=10000, mode=Timer.PERIODIC, callback=do_reconnect)
