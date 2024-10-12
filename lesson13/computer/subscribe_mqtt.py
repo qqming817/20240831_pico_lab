@@ -5,7 +5,17 @@ def on_connect(client, userdata, flags, reason_code, properties):
     client.subscribe("SA-12/#")
     
 def on_message(client, userdata, msg):
-    print(f"Received message '{msg.payload.decode()}' on topic '{msg.topic}'")
+    global led_origin_value
+    topic = msg.topic
+    value = msg.payload.decode()
+
+    if topic == "SA-12/LED_LV":
+        led_value = int(value)
+        if led_value != led_origin_value:
+            led_origin_value = led_value
+            print(f'led_value: {led_value}')
+
+    #print(f"Received message '{msg.payload.decode()}' on topic '{msg.topic}'")
 
 def main():
     client = mqtt.Client(callback_api_version = mqtt.CallbackAPIVersion.VERSION2)
@@ -19,6 +29,7 @@ def main():
     client.loop_forever()
 
 if __name__ == "__main__":
+    led_origin_value = 0
     main()
                      
                     

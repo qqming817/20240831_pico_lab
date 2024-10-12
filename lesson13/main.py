@@ -28,9 +28,16 @@ def do_thing(t):
     mqtt.publish('SA-12/TEMPERATURE', f'{temperature}')
 
     light_lv = adc_light.read_u16()
-    #print(datetime_str)
+    print(datetime_str)
     print(f"光線:{light_lv}")
     mqtt.publish('SA-12/LIGHT_LV', f'{light_lv}')
+    
+    #last_light_lv = light_lv
+    
+    #if light_lv < last_light_lv * 0.95 or light_lv > last_light_lv * 1.05:
+    #    print(f"光線:{light_lv}")
+    #    mqtt.publish('SA-12/LIGHT_LV', f'{light_lv}')
+        
 
 #可變電阻
 def do_thing_1(t):
@@ -58,6 +65,8 @@ if __name__ == "__main__":
     adc1 = ADC(Pin(26)) #可變電阻
     adc_light = ADC(Pin(28)) #PWM LED
     pwm = PWM(Pin(15), freq=65535) #freq要給
+    
+    #last_light_lv = 0
     
     #連線到Internet
     try:
