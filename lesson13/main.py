@@ -42,7 +42,7 @@ def do_thing_1(t):
     light_lv = round(duty/65535*100)
     print(f"可變電阻: {light_lv}")
     #mqtt.publish('SA-12/亮度', f'{light_lv}')
-    mqtt.publish('SA-12/亮度', f'{light_lv}')
+    mqtt.publish('SA-12/LIGHT', f'{light_lv}')
 
 def do_reconnect(t):
     tools.reconnect()
