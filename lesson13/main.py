@@ -24,11 +24,13 @@ def do_thing(t):
     # The temperature sensor measures the Vbe voltage of a biased bipolar diode, connected to the fifth ADC channel
     # Typically, Vbe = 0.706V at 27 degrees C, with a slope of -1.721mV (0.001721) per degree. 
     temperature = 27 - (reading - 0.706)/0.001721
-    ligth = adc_light.read_u16()
+    print(f"溫度:{temperature}")    
+    mqtt.publish('SA-12/TEMPERATURE', f'{temperature}')
+
+    light_lv = adc_light.read_u16()
     #print(datetime_str)
-    
-    print(f"溫度:{temperature}")
-    print(f"光線:{ligth}")
+    print(f"光線:{light_lv}")
+    mqtt.publish('SA-12/LIGHT_LV', f'{light_lv}')
 
 #可變電阻
 def do_thing_1(t):
@@ -41,8 +43,8 @@ def do_thing_1(t):
     
     light_lv = round(duty/65535*100)
     print(f"可變電阻: {light_lv}")
-    #mqtt.publish('SA-12/亮度', f'{light_lv}')
-    mqtt.publish('SA-12/LIGHT', f'{light_lv}')
+    #mqtt.publish('SA-12/亮度', f'{light_lv}') #中文好像有問題
+    mqtt.publish('SA-12/LED_LV', f'{light_lv}')
 
 def do_reconnect(t):
     tools.reconnect()
