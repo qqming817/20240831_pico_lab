@@ -2,7 +2,7 @@ import paho.mqtt.client as mqtt #需安裝pip install paho-mqtt
 import os, csv
 from datetime import datetime 
 
-def record(date:str, topic:str, value:int):
+def record(topic:str, value:int | float):
     '''
     #檢查是否有data資料夾,沒有就建立data資料夾
     #取得今天日期,如果沒有今天日期.csv,就建立一個全新的今天日期.csv
@@ -21,6 +21,7 @@ def record(date:str, topic:str, value:int):
 
     today = datetime.today()
     current_dt_str = today.strftime("%Y-%m-%d %H:%M:%S")
+    date = today.strftime("%Y-%m-%d")
     filename = date + ".csv"
 
     #get file arbspath
@@ -54,12 +55,14 @@ def on_message(client, userdata, msg):
             today = datetime.now()
             nowstr = today.strftime('%y-%m-%d')
             #saved_data = [nowstr, "SA-12/LED_LEVEL", led_value] #組成List
-            record(nowstr, topic, led_value)
+            record(topic, led_value)
 
     if topic == "SA-12/TEMPERATURE":
-        if temperature_origin_value != value:
-            temperature_origin_value = value
-            print(f'溫度: {value}')
+        temperature_value = float(value)
+        if temperature_origin_value != temperature_value:
+            temperature_origin_value = temperature_value
+             record(topic, temperature_value)
+
 
     #print(f"Received message '{msg.payload.decode()}' on topic '{msg.topic}'")
 
