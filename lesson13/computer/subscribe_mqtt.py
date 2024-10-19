@@ -1,4 +1,4 @@
-import paho.mqtt.client as mqtt
+import paho.mqtt.client as mqtt #需安裝pip install paho-mqtt
 import os, csv
 from datetime import datetime 
 
