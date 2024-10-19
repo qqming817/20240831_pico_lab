@@ -43,6 +43,7 @@ def on_connect(client, userdata, flags, reason_code, properties):
 def on_message(client, userdata, msg):
     global led_origin_value
     global temperature_origin_value
+    global light_origin_status
 
     topic = msg.topic
     value = msg.payload.decode()
@@ -52,16 +53,21 @@ def on_message(client, userdata, msg):
         if led_value != led_origin_value:
             led_origin_value = led_value
             print(f'led_value: {led_value}')
-            today = datetime.now()
-            nowstr = today.strftime('%y-%m-%d')
-            #saved_data = [nowstr, "SA-12/LED_LEVEL", led_value] #組成List
             record(topic, led_value)
 
     if topic == "SA-12/TEMPERATURE":
         temperature_value = float(value)
         if temperature_origin_value != temperature_value:
             temperature_origin_value = temperature_value
-             record(topic, temperature_value)
+            print(f'temperature_value: {temperature_value}')
+            record(topic, temperature_value)
+    
+    if topic == "SA-12/LIGHT_SWITCH":
+        light_status = int(value)
+        if light_origin_status != light_status:
+            light_origin_status = light_status
+            print(f'light_status: {light_status}')
+            record(topic, light_status)
 
 
     #print(f"Received message '{msg.payload.decode()}' on topic '{msg.topic}'")
@@ -80,6 +86,7 @@ def main():
 if __name__ == "__main__":
     led_origin_value = 0
     temperature_origin_value = 0.0
+    light_origin_status = 0
     main()
                      
                     

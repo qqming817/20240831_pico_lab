@@ -30,6 +30,9 @@ def do_thing(t):
     light_lv = adc_light.read_u16()
     print(f"光線:{light_lv}")
     mqtt.publish('SA-12/LIGHT_LV', f'{light_lv}')
+    line_status = 0 if light_lv < 10000 else 1
+    print(f"開關:{line_status}")
+    mqtt.publish('SA-12/LIGHT_SWITCH', f'{line_status}')
     
     #last_light_lv = light_lv
     
