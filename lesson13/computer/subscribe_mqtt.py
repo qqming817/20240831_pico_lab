@@ -21,7 +21,7 @@ def record(date:str, topic:str, value:int):
 
     today = datetime.today()
     current_dt_str = today.strftime("%Y-%m-%d %H:%M:%S")
-    filename = current_dt_str + ".csv"
+    filename = date + ".csv"
 
     #get file arbspath
     full_path = os.path.join(data_dir, filename)
