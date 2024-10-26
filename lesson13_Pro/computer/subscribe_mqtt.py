@@ -1,6 +1,29 @@
 import paho.mqtt.client as mqtt #需安裝pip install paho-mqtt
 import os, csv
 from datetime import datetime 
+import sqlite3
+from sqlite3 import Error
+
+def insert_to_sqlite(values):
+    try:
+        #db_root_dir = os.getcwd()
+        #db_root_dir = os.path.join(db_root_dir, 'pico.db')
+        #filename = db_root_dir + "pico.db"
+        conn = sqlite3.connect('./data/pico.db')
+    except Exception as e:
+        print (e)
+        return
+    
+    sql = """
+    INSERT INTO chicken_accommodation (record_date, equipment, value) VALUES (
+    ?,?,?)
+    """
+
+    myCursor =  conn.cursor()
+    myCursor.execute(sql, values)
+    conn.commit()
+    myCursor.close()
+    conn.close()
 
 def record(topic:str, value:int | float):
     '''
@@ -35,6 +58,7 @@ def record(topic:str, value:int | float):
     with open(full_path, mode='a', encoding='utf-8', newline='') as file:
         writer = csv.writer(file)
         writer.writerow([current_dt_str, topic, value])
+        insert_to_sqlite((current_dt_str, topic, float(value)))
 
 def on_connect(client, userdata, flags, reason_code, properties):
     #連線bloker成功時，只會執行一次
