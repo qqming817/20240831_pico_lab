@@ -26,6 +26,7 @@ def do_thing(t):
     temperature = round(27 - (reading - 0.706)/0.001721, 2)
     print(f"溫度:{temperature}")    
     mqtt.publish('SA-12/TEMPERATURE', f'{temperature}')
+    blynk_mqtt.publish('ds/temperature', f'{temperature}')
 
     light_lv = adc_light.read_u16()
     print(f"光線:{light_lv}")
@@ -33,6 +34,7 @@ def do_thing(t):
     line_status = 0 if light_lv < 10000 else 1
     print(f"開關:{line_status}")
     mqtt.publish('SA-12/LIGHT_SWITCH', f'{line_status}')
+    blynk_mqtt.publish('ds/light_switch', f'{line_status}')
     
     #last_light_lv = light_lv
     
@@ -42,7 +44,8 @@ def do_thing(t):
         
 
 #可變電阻
-def do_thing_1(t):
+def do_thing_1(t):    
+    
     '''
     :param t:Timer的實體
     負責偵測可變電阻和改變LED的亮度
@@ -54,14 +57,16 @@ def do_thing_1(t):
     print(f"可變電阻: {light_lv}")
     #mqtt.publish('SA-12/亮度', f'{light_lv}') #中文好像有問題
     mqtt.publish('SA-12/LED_LV', f'{light_lv}')
+    blynk_mqtt.publish('ds/led_lv', f'{light_lv}')
 
 def do_reconnect(t):
     tools.reconnect()
 
 #第三階段
 def main():
+    global blynk_mqtt
     print(config.BLYNK_MQTT_BROKER)
-    blynk_mqtt = MQTTClient(config.BLYNK_TEMPLATE_ID, config.BLYNK_MQTT_BROKER, user='device', password=config.BLYNK_AUTH_TOKEN)
+    blynk_mqtt = MQTTClient(config.BLYNK_TEMPLATE_ID, config.BLYNK_MQTT_BROKER, user='device', password=config.BLYNK_AUTH_TOKEN, keepalive=60)
     blynk_mqtt.connect()
     
 if __name__ == "__main__":
@@ -88,8 +93,8 @@ if __name__ == "__main__":
         mqtt.connect()
     
         #使用多個Timer可執行多個工作
-        #Timer(period=2000, mode=Timer.PERIODIC, callback=do_thing)
-        #Timer(period=1000, mode=Timer.PERIODIC, callback=do_thing_1)
+        Timer(period=2000, mode=Timer.PERIODIC, callback=do_thing)
+        Timer(period=1000, mode=Timer.PERIODIC, callback=do_thing_1)
     
     blynk_mqtt = None
     main()
