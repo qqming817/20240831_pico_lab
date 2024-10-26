@@ -62,7 +62,8 @@ def do_thing_1(t):
 def do_reconnect(t):
     tools.reconnect()
 
-#第三階段
+#第4階段
+#https://github.com/roberthsu2003/pico_W/tree/main/%E5%AF%A6%E9%9A%9B%E6%A1%88%E4%BE%8B/project2
 def main():
     global blynk_mqtt
     print(config.BLYNK_MQTT_BROKER)
