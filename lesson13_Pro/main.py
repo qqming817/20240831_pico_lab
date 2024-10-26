@@ -1,6 +1,6 @@
 #! usr/bin/micropython
 
-import tools
+import tools, config
 
 '''
 LED -> GPIO 15
@@ -58,8 +58,11 @@ def do_thing_1(t):
 def do_reconnect(t):
     tools.reconnect()
 
+#第三階段
 def main():
-    pass
+    print(config.BLYNK_MQTT_BROKER)
+    blynk_mqtt = MQTTClient(config.BLYNK_TEMPLATE_ID, config.BLYNK_MQTT_BROKER, user='device', password=config.BLYNK_AUTH_TOKEN)
+    blynk_mqtt.connect()
     
 if __name__ == "__main__":
     #tools.connect() #連線到Wifi
@@ -85,7 +88,8 @@ if __name__ == "__main__":
         mqtt.connect()
     
         #使用多個Timer可執行多個工作
-        Timer(period=2000, mode=Timer.PERIODIC, callback=do_thing)
-        Timer(period=1000, mode=Timer.PERIODIC, callback=do_thing_1)
-
+        #Timer(period=2000, mode=Timer.PERIODIC, callback=do_thing)
+        #Timer(period=1000, mode=Timer.PERIODIC, callback=do_thing_1)
+    
+    blynk_mqtt = None
     main()
